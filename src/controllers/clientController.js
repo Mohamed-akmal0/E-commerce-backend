@@ -1,16 +1,24 @@
 const { hashPassword } = require("../helpers/helperFunctions");
-const userSchema = require("../models/userModel")
+const userSchema = require("../models/userModel");
 
 module.exports.signupController = async (req, res) => {
   try {
     const { email, name, password } = req?.body;
-    console.log("email in controller", email);
-    const hashedPassword = hashPassword(password)
-    res.status(200).json({ data: { email: email, name: name, pass:hashedPassword } });
+    const hashedPassword = hashPassword(password);
+    //creating new user instance
+    const newUser = new userSchema({
+      email: email,
+      name: name,
+      password: hashedPassword,
+    });
+    //saving user to db
+    await newUser.save();
+    res.status(200).json({ message: "user stored successfully" });
   } catch (error) {
     console.log("err in signup controller", error);
     res.status(400).json({
-      message: error.message,
+      errMessage: error.message,
+      message: "user while storing user",
     });
   }
 };
