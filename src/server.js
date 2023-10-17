@@ -16,7 +16,7 @@ app.use(express.urlencoded({ extended: true }));
 databaseConnection();
 
 //routes
-app.use("api/client", clientRoutes);
+app.use("/api/client", clientRoutes);
 
 app.listen(port, () => {
   console.log(`server running at port ${port}`);
