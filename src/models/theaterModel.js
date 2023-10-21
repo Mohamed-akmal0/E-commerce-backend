@@ -18,7 +18,7 @@ const theaterModel = new mongoose.Schema({
     default: false,
     require: true,
   },
-  isApprove: {
+  isApproved: {
     type: Boolean,
     default: false,
     require: true,
