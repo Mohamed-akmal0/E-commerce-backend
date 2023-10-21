@@ -4,6 +4,10 @@ const userSchema = require("../models/userModel");
 module.exports.signupController = async (req, res) => {
   try {
     const { email, name, password } = req?.body;
+    const alreadyCreated = await userSchema.findOne({email:email})
+    if(alreadyCreated){
+      throw new Error('email already in use')
+    }
     const hashedPassword = hashPassword(password);
     //creating new user instance
     const newUser = new userSchema({
@@ -18,7 +22,6 @@ module.exports.signupController = async (req, res) => {
     console.log("err in signup controller", error);
     res.status(400).json({
       errMessage: error.message,
-      message: "user while storing user",
     });
   }
 };
