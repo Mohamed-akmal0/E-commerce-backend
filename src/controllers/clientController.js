@@ -1,14 +1,15 @@
+const bcrypt = require("bcrypt");
 const { hashPassword } = require("../helpers/helperFunctions");
 const userSchema = require("../models/userModel");
 
 module.exports.signupController = async (req, res) => {
   try {
     const { email, name, password } = req?.body;
-    const alreadyCreated = await userSchema.findOne({email:email})
-    if(alreadyCreated){
-      throw new Error('email already in use')
+    const alreadyCreated = await userSchema.findOne({ email: email });
+    if (alreadyCreated) {
+      throw new Error("email already in use");
     }
-    const hashedPassword = hashPassword(password);
+    const hashedPassword = await hashPassword(password);
     //creating new user instance
     const newUser = new userSchema({
       email: email,
@@ -17,7 +18,9 @@ module.exports.signupController = async (req, res) => {
     });
     //saving user to db
     await newUser.save();
-    res.status(200).json({ message: "user stored successfully" });
+    res
+      .status(200)
+      .json({ message: "user stored successfully"});
   } catch (error) {
     console.log("err in signup controller", error);
     res.status(400).json({
@@ -26,9 +29,21 @@ module.exports.signupController = async (req, res) => {
   }
 };
 
-module.exports.loginController = (req, res) => {
+module.exports.loginController = async (req, res) => {
   try {
     const { email, password } = req.body;
+    const fetchUserDetails = await userSchema.findOne({ email: email });
+    if (!fetchUserDetails) {
+      throw new Error("incorrect email");
+    }
+    const comparedPassword = await bcrypt.compare(
+      password,
+      fetchUserDetails.password
+    );
+    if (!comparedPassword) {
+      throw new Error("incorrect password");
+    }
+    res.status(200).json({ msg: "success", data: fetchUserDetails });
   } catch (error) {
     console.log("err in login controller", error);
     res.status(400).json({
