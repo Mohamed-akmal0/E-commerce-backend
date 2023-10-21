@@ -1,3 +1,5 @@
+const theaterSchema = require("../models/theaterModel");
+
 require("dotenv").config();
 
 const adminLogin = async (req, res) => {
@@ -15,6 +17,16 @@ const adminLogin = async (req, res) => {
   }
 };
 
+const getNonApprovedTheaterAccounts = async (req, res) => {
+  try {
+    const theaterAccounts = await theaterSchema.findOne({ isApproved: false });
+    res.status(200).json({ data: theaterAccounts });
+  } catch (error) {
+    res.status(400).json({ errMessage: error.message });
+  }
+};
+
 module.exports = {
-  adminLogin, 
+  adminLogin,
+  getNonApprovedTheaterAccounts,
 };

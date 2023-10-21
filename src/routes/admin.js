@@ -1,6 +1,10 @@
 const router = require("express").Router();
-const { adminLogin } = require("../controllers/adminController");
+const {
+  adminLogin,
+  getNonApprovedTheaterAccounts,
+} = require("../controllers/adminController");
 
 router.post("/login", adminLogin);
+router.get("/nonApprovedTheater", getNonApprovedTheaterAccounts);
 
 module.exports = router;

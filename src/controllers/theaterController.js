@@ -16,7 +16,7 @@ const theaterSignup = async (req, res) => {
       password: hashedPassword,
     });
     await newTheaterUser.save();
-    res.status(201).json({ msg: "created" });
+    res.status(201).json({ msg: "you can log in once you get approval" });
   } catch (error) {
     res.status(400).json({ errMessage: error.message });
   }
@@ -30,7 +30,7 @@ const theaterLogin = async (req, res) => {
       throw new Error("incorrect email");
     }
     if (!fetchTheaterDetails.isApproved) {
-      throw new Error("you are not approved by admin");
+      throw new Error("will send an email once get the approval");
     }
     const comparedPassword = await bcrypt.compare(
       password,
