@@ -23,6 +23,11 @@ const theaterModel = new mongoose.Schema({
     default: false,
     require: true,
   },
+  isRejected: {
+    type: Boolean,
+    default: false,
+    require: true,
+  },
 });
 
 const theaterSchema = new mongoose.model("Theater", theaterModel);
