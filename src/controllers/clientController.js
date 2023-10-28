@@ -20,7 +20,7 @@ module.exports.signupController = async (req, res) => {
     //saving user to db
     await newUser.save();
     res
-      .status(200)
+      .status(201)
       .json({ message: "user stored successfully"});
   } catch (error) {
     console.log("err in signup controller", error);
