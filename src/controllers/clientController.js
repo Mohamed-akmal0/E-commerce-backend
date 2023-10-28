@@ -3,6 +3,7 @@ const { hashPassword } = require("../helpers/helperFunctions");
 const userSchema = require("../models/userModel");
 
 module.exports.signupController = async (req, res) => {
+  //credentials null validation can be done in the client side
   try {
     const { email, name, password } = req?.body;
     const alreadyCreated = await userSchema.findOne({ email: email });
@@ -30,6 +31,7 @@ module.exports.signupController = async (req, res) => {
 };
 
 module.exports.loginController = async (req, res) => {
+  //credentials null validation can be done in the client side
   try {
     const { email, password } = req.body;
     const fetchUserDetails = await userSchema.findOne({ email: email });

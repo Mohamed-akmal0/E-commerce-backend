@@ -3,6 +3,7 @@ const { hashPassword } = require("../helpers/helperFunctions");
 const theaterSchema = require("../models/theaterModel");
 
 const theaterSignup = async (req, res) => {
+  //credentials null validation can be done in the client side
   try {
     const { name, email, password } = req.body;
     const emailExist = await theaterSchema.findOne({ email: email });
@@ -23,6 +24,7 @@ const theaterSignup = async (req, res) => {
 };
 
 const theaterLogin = async (req, res) => {
+  //credentials null validation can be done in the client side
   try {
     const { email, password } = req.body;
     const fetchTheaterDetails = await theaterSchema.findOne({ email: email });
