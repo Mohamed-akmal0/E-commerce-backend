@@ -2,7 +2,7 @@ const bcrypt = require("bcrypt");
 const { hashPassword } = require("../helpers/helperFunctions");
 const userSchema = require("../models/userModel");
 
-module.exports.signupController = async (req, res) => {
+const signupController = async (req, res) => {
   //credentials null validation can be done in the client side
   try {
     const { email, name, password } = req?.body;
@@ -30,7 +30,7 @@ module.exports.signupController = async (req, res) => {
   }
 };
 
-module.exports.loginController = async (req, res) => {
+const loginController = async (req, res) => {
   //credentials null validation can be done in the client side
   try {
     const { email, password } = req.body;
@@ -45,11 +45,21 @@ module.exports.loginController = async (req, res) => {
     if (!comparedPassword) {
       throw new Error("incorrect password");
     }
-    res.status(200).json({ msg: "success", data: fetchUserDetails });
+    res
+      .status(200)
+      .json({
+        message: "success",
+        data: { id: fetchUserDetails._id, email: email },
+      });
   } catch (error) {
     console.log("err in login controller", error);
-    res.status(400).json({
+    res.status(401).json({
       message: error.message,
     });
   }
+};
+
+module.exports = {
+  signupController,
+  loginController,
 };
